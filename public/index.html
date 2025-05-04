@@ -135,6 +135,80 @@
     flex-direction: column;
     align-items: center;
   }
+/* Updated Video Collection Styles */
+  #videoCollection1 {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
+
+  #videoCollection1 h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
+  #videoCollection1 button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #videoCollection1 button:hover {
+    background-color: #FF4500;
+    transform: scale(1.03);
+  }
+  /* Updated Video Collection Styles */
+  #videoCollection {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
+
+  #videoCollection h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
+  #videoCollection button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #videoCollection button:hover {
+    background-color: #FF4500;
+    transform: scale(1.03);
+  }
 
   #login {
     display: flex;
@@ -245,10 +319,6 @@
     background-color: #FF4500;
   }
 
-  .user-list {
-    cursor: pointer;
-  }
-
   @media (max-width: 1024px) {
     #main {
       flex-direction: column;
@@ -275,10 +345,150 @@
       max-width: 90%;
     }
   }
+
+  @media (max-width: 600px) {
+    #header h2 {
+      font-size: 1.5rem;
+    }
+
+    .user img {
+      max-width: 30px;
+    }
+
+    #loginBox {
+      padding: 20px;
+    }
+
+    #preview {
+      max-width: 80px;
+    }
+
+    #videoCollection button {
+      font-size: 0.95rem;
+    }
+  }
+    .sidebarScrollingNote {
+  width: 100%;
+  overflow: hidden;
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.sidebarScrollText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: sidebarScroll 12s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes sidebarScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.public-chat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 12px 20px;
+  border-bottom: 2px solid #ff6600;
+}
+
+.public-chat-header h2 {
+  color: #fff;
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.scrolling-text {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  height: 30px;
+  margin: 10px 0;
+}
+
+.scrolling-text span {
+  display: inline-block;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff0000, 0 0 10px #ff6600, 0 0 20px #ffcc00;
+  animation: scroll-left 10s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.cta-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff6600, #ffcc00);
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 0 10px #ff6600;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse 1.5s infinite;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff9900;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px #ff6600;
+  }
+  50% {
+    box-shadow: 0 0 20px #ffcc00;
+  }
+  100% {
+    box-shadow: 0 0 10px #ff6600;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .public-chat-header h2 {
+    font-size: 20px;
+  }
+
+  .scrolling-text span {
+    font-size: 16px;
+  }
+
+  .cta-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
 </style>
+  <script src='//whephiwums.com/sdk.js' data-zone='9229076' data-sdk='show_9229076'></script>
+
 </head>
 <body>
-
   <div id="header">
     <h2>Free Random Video chat 💬</h2>
   </div>
@@ -295,74 +505,296 @@
 
   <div id="main">
     <div id="leftSidebar">
-      <h3 id="onlineUserCount">Online Users (300+)</h3>
-      <div id="userList" class="user-list">
-        <!-- Example of a user in the list -->
-        <div class="user" onclick="openPrivateChat('User1')">
-          <img src="https://via.placeholder.com/40" alt="User1" />
-          <span>User1</span>
-        </div>
-        <div class="user" onclick="openPrivateChat('User2')">
-          <img src="https://via.placeholder.com/40" alt="User2" />
-          <span>User2</span>
-        </div>
-      </div>
+  <h3 id="onlineUserCount">Online Users (300+)</h3>
+  
     </div>
 
     <div id="container">
       <div id="chat">
-        <h2>Public Chat</h2>
+        <div class="public-chat-header">
+  <h2>Public Chat</h2>
+  <div class="scrolling-text">
+    <span>🔥Click below on 👀 Video Chat, login with any gmail to start video chat</span>
+  </div>
+          <a href="https://www.febspot.com/auth/google/?ref=725136" class="cta-button" target="_blank">
+    👀 Video Chat
+  </a>
+</div>
         <div id="messages"></div>
-        <input id="msg" placeholder="Type your message..." />
-        <button onclick="send()">Send</button>
+        <div id="sendRow">
+          <input id="msg" placeholder="Type your message..." />
+          <button onclick="sendThenShowAd()">Send</button>
+
+<script src="https://cdn.adsgram.io/ads.js"></script>
+<script>
+  let AdController;
+
+  // পেজ লোড হলে অ্যাড ইনিশিয়ালাইজ করো
+  window.onload = async function () {
+    try {
+      AdController = window.Adsgram.init({
+        blockId: "int-10200" // এখানে তোমার আসল block ID বসাও
+      });
+    } catch (err) {
+      console.log("Ad init failed:", err);
+    }
+  };
+
+  // এই ফাংশনটা বাটনে ক্লিক করলে কল হবে
+  async function sendThenShowAd() {
+    // আগে মেসেজ পাঠাও
+    send();
+
+    // তারপর অ্যাড দেখাও
+    try {
+      if (AdController) {
+        await AdController.show();
+      }
+    } catch (err) {
+      console.log("Ad failed to show:", err);
+    }
+  }
+
+  // তোর আসল send() ফাংশন
+  function send() {
+    console.log("Message sent!");
+    // এখানে তুই যেটা মেসেজ সেন্ড করিস বা সার্ভারে পাঠাস, সেটা বসাবি
+  }
+</script>
+
+
+          <button onclick="
+    // Rewarded interstitial
+        
+show_9229076().then(() => {
+    window.open('https://t.me/TalkwithStrangerss')
+    alert('Stay tuned Video stream will be soon here');
+})" style="background: linear-gradient(135deg, #ff6a00, #ee0979); color: white; font-weight: bold; padding: 15px 25px; font-size: 1rem; border: none; border-radius: 12px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.3s ease;">
+  💬 Start Video Chat   
+</button>
+        </div>
       </div>
-      
       <div id="privateChat">
         <h3 id="privateTitle"></h3>
         <div id="privateMessages"></div>
         <input id="privateMsg" placeholder="Type private message..." />
-        <button onclick="sendPrivate()">Send Private Message</button>
+        <button onclick="
+    // Rewarded Popup
+
+show_9229076('pop').then(() => {
+    sendPrivate()
+    // your code to reward user for rewarded format
+}).catch(e => {
+    // user get error during playing ad
+    // do nothing or whatever you want
+})
+
+        ">Send Private</button>
       </div>
+    </div>
+    
+    <div id="rightSidebar">
+      <div id="telega-ad-container"></div>
+    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+<script>
+  const ads = window.TelegaIn.AdsController.create_miniapp({
+    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
+    ads.ad_show({
+    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+    container: "telega-ad-container"
+  });
+</script>
+      
+  
+      <div class="sidebarScrollingNote">
+  <div class="sidebarScrollText">🎬 Fresh videos added daily — Free to download! Don’t miss out!</div>
+</div>
+
+      <div id="videoCollection">
+        <h4>Real 18+ Video Collections</h4>
+        <button onclick=" show_9229076().then(() => { window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">New Collection</button>
+        <button onclick="show_9229076().then(() => { window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">Hot Webseries</button>
+        <button onclick="show_9229076().then(() => { window.open('https://t.me/Bhailinde', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">Real Collection</button>
+      </div>
+<div id="videoCollection">
+  <h4>Telegram group</h4>
+        <button onclick="alert('Wait for approval'); window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');">
+  Join group
+</button>
+
+</div>
+      
+      <div id="telega-ad-container"></div>
     </div>
   </div>
 
+  <script src="/socket.io/socket.io.js"></script>
   <script>
-    function startChat() {
-      let username = document.getElementById('username').value;
-      let picInput = document.getElementById('picInput').files[0];
-      let preview = document.getElementById('preview');
-      if (picInput) {
-        preview.src = URL.createObjectURL(picInput);
-        preview.style.display = 'block';
-      }
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('main').style.display = 'flex';
+    const socket = io();
+    let username = '';
+    let profilePic = '';
+    let userColors = {};
+
+    function getRandomColor() {
+      const colors = ["#FF6347", "#1E90FF", "#32CD32", "#FFD700", "#FF69B4", "#00CED1", "#DA70D6"];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
 
-    function openPrivateChat(userName) {
-      document.getElementById('chat').style.display = 'none';
-      document.getElementById('privateChat').style.display = 'block';
-      document.getElementById('privateTitle').textContent = `Chatting with ${userName}`;
+    let privateTo = null;
+
+    function formatTime() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+
+    function startChat() {
+      const nameInput = document.getElementById('username');
+      const picInput = document.getElementById('picInput');
+
+      if (!nameInput.value) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      username = nameInput.value;
+      const file = picInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic = e.target.result;
+          completeLogin();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        completeLogin();
+      }
+    }
+
+    function completeLogin() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('main').style.display = 'flex';
+      document.getElementById('chat').style.display = 'block';
+      socket.emit('join', { user: username, pic: profilePic });
     }
 
     function send() {
-      let msg = document.getElementById('msg').value;
-      let messagesDiv = document.getElementById('messages');
-      let newMessage = document.createElement('div');
-      newMessage.textContent = msg;
-      messagesDiv.appendChild(newMessage);
-      document.getElementById('msg').value = '';
+      const input = document.getElementById('msg');
+      const message = {
+        user: username,
+        pic: profilePic,
+        text: input.value,
+        time: formatTime()
+      };
+      socket.emit('message', message);
+      input.value = '';
     }
+
+    socket.on('message', data => {
+      const div = document.createElement('div');
+      if (!userColors[data.user]) {
+        userColors[data.user] = getRandomColor();
+      }
+      div.innerHTML = `<strong style="color: ${userColors[data.user]}">${data.user}</strong> <small>${data.time}</small><br>
+        ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
+        ${data.text}<hr>`;
+      const messagesContainer = document.getElementById('messages');
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    socket.on('privateMessage', data => {
+      if (!userColors[data.user]) {
+        userColors[data.user] = getRandomColor();
+      }
+      const div = document.createElement('div');
+      div.innerHTML = `<strong style="color: ${userColors[data.user]}">${data.user}</strong> <small>${data.time}</small>: ${data.text}<hr>`;
+      document.getElementById('privateMessages').appendChild(div);
+    });
+
+    const userList = document.getElementById('userList');
+    socket.on('onlineUsers', users => {
+      userList.innerHTML = '';
+      users.forEach(u => {
+        if (u.user !== username) {
+          const div = document.createElement('div');
+          div.classList.add('user');
+          div.innerHTML = `<img src="${u.pic}" /><span>${u.user}</span>`;
+          div.onclick = () => {
+            privateTo = u.id;
+            document.getElementById('privateChat').style.display = 'block';
+            document.getElementById('privateTitle').innerText = `Chatting with ${u.user}`;
+          };
+          userList.appendChild(div);
+        }
+      });
+    });
 
     function sendPrivate() {
-      let privateMsg = document.getElementById('privateMsg').value;
-      let privateMessagesDiv = document.getElementById('privateMessages');
-      let newPrivateMessage = document.createElement('div');
-      newPrivateMessage.textContent = privateMsg;
-      privateMessagesDiv.appendChild(newPrivateMessage);
-      document.getElementById('privateMsg').value = '';
+      const input = document.getElementById('privateMsg');
+      if (!privateTo || !input.value.trim()) return;
+
+      const privateMsg = {
+        to: privateTo,
+        user: username,
+        text: input.value,
+        time: formatTime()
+      };
+
+      const div = document.createElement('div');
+      div.innerHTML = `<strong>You</strong> <small>${privateMsg.time}</small>: ${privateMsg.text}<hr>`;
+      document.getElementById('privateMessages').appendChild(div);
+
+      socket.emit('privateMessage', privateMsg);
+      input.value = '';
     }
+
+    document.getElementById('picInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('preview').src = e.target.result;
+          document.getElementById('preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
+  
+  <script>
+  function updateOnlineCount() {
+    const min = 300;
+    const max = 900;
+    const randomCount = Math.floor(Math.random() * (max - min + 1)) + min;
+    document.getElementById("onlineUserCount").innerText = `Online Users on video chat👫 (${randomCount} )`;
+    
+    // Repeat every 15-20 seconds
+    const nextUpdate = Math.random() * (20000 - 15000) + 15000; // ms
+    setTimeout(updateOnlineCount, nextUpdate);
+  }
+
+  // Start the loop
+  updateOnlineCount();
+</script>
+  <script>
+  const button = document.querySelector('button');
+  button.onmouseover = () => {
+    button.style.transform = "scale(1.05)";
+    button.style.boxShadow = "0 0 20px rgba(255, 105, 180, 0.8)";
+  };
+  button.onmouseout = () => {
+    button.style.transform = "scale(1)";
+    button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
+  };
 
 </body>
-</html>
+</html> 
