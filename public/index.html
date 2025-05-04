@@ -2,306 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gossip Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    header {
-      background: linear-gradient(to right, #6a11cb, #fc466b);
-      color: white; padding: 10px; text-align: center; font-size: 24px; font-weight: 700;
-    }
-    .login-section {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 20px;
-    }
-    .login-section input, .login-section select, .login-section button {
-      padding: 10px; margin: 10px 0; width: 250px;
-      border: 1px solid #ccc; border-radius: 6px; font-size: 16px;
-    }
-    .login-section button {
-      background-color: #6a11cb; color: white; border: none; cursor: pointer;
-    }
-
-    .container {
-      display: none; flex: 1; overflow: hidden;
-      opacity: 0; transition: opacity 0.5s ease;
-    }
-    .container.show {
-      display: flex;
-      opacity: 1;
-    }
-
-    .sidebar {
-      width: 300px; border-right: 1px solid #ccc; padding: 10px;
-      overflow-y: auto; background-color: #fff;
-    }
-    .sidebar h3 { font-size: 16px; margin-bottom: 10px; }
-    .filter-buttons {
-      display: flex; gap: 10px; margin-bottom: 10px;
-    }
-    .filter-buttons button {
-      padding: 5px 10px; border: none; border-radius: 20px;
-      cursor: pointer; background: #eee;
-    }
-    .user-list {
-      display: flex; flex-direction: column; gap: 8px;
-    }
-    .user {
-      display: flex; justify-content: space-between;
-      background-color: #cfe2ff; padding: 8px;
-      border-radius: 6px; align-items: center; cursor: pointer;
-    }
-    .user.female { background-color: #f8d7da; }
-    .user.active { background-color: #a3c2ff; }
-    .user-info { display: flex; flex-direction: column; }
-    .flag { width: 20px; height: 15px; }
-    .chat-section {
-      flex: 1; display: flex; flex-direction: column;
-    }
-    .chat-header {
-      padding: 10px;
-      background: linear-gradient(to right, #fc466b, #6a11cb);
-      color: white; font-weight: 600;
-    }
-    .chat-body {
-      flex: 1; background: #f5f5f5;
-      padding: 10px; overflow-y: auto;
-    }
-    .chat-input {
-      display: flex; gap: 8px; padding: 10px;
-      border-top: 1px solid #ccc; background-color: #fff;
-    }
-    .chat-input input {
-      flex: 1; padding: 8px; border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    .chat-input button {
-      padding: 8px 12px; border: none;
-      border-radius: 8px; background-color: #2979ff;
-      color: white; cursor: pointer;
-    }
-    .chat-input .emoji { background-color: #ff9800; }
-    .chat-input .gif { background-color: #9c27b0; }
-    .chat-input .image { background-color: #f44336; }
-    .message { margin-bottom: 8px; }
-    .message.you { font-weight: bold; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GossipChat Clone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-900 text-white h-screen flex flex-col">
 
-<header>Gossip</header>
+  <!-- Header -->
+  <header class="bg-gray-800 p-4 text-center text-xl font-bold">
+    GossipChat
+  </header>
 
-<div class="login-section" id="loginSection">
-  <h2>Enter Your Info</h2>
-  <input type="text" id="username" placeholder="Your Name" required />
-  <input type="number" id="age" placeholder="Your Age" required />
-  <select id="gender" required>
-    <option value="">Select Gender</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-  </select>
-  <select id="country" required>
-    <option value="">Select Country</option>
-  </select>
-  <input type="text" id="region" placeholder="Your Region" required />
-  <button onclick="startChat()" id="loginBtn" disabled>Login & Enter</button>
-</div>
+  <main class="flex flex-1 overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-800 p-4 overflow-y-auto">
+      <h2 class="text-lg font-semibold mb-4">Users</h2>
+      <ul id="userList" class="space-y-2">
+        <!-- Dynamic Users -->
+      </ul>
+    </aside>
 
-<div class="container" id="chatContainer">
-  <div class="sidebar">
-    <h3>Online Users 184</h3>
-    <div class="filter-buttons">
-      <button onclick="filterUsers('all')">🌐 All</button>
-      <button onclick="filterUsers('male')">👨‍🦱 Male</button>
-      <button onclick="filterUsers('female')">👩 Female</button>
-    </div>
-    <div class="user-list" id="userList"></div>
-  </div>
-
-  <div class="chat-section">
-    <div class="chat-header" id="chatHeader">Select a user<br/><small></small></div>
-    <div class="chat-body" id="chatBody"></div>
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type your message..." disabled />
-      <button class="emoji" onclick="insertEmoji()">😊</button>
-      <button class="gif" onclick="sendGIF()">GIF</button>
-      <button class="image" onclick="sendImage()">📷</button>
-      <button class="send" onclick="sendMessage()" id="sendBtn" disabled>Send</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  const countrySelect = document.getElementById("country");
-  const userList = document.getElementById('userList');
-  const chatBody = document.getElementById('chatBody');
-  const messageInput = document.getElementById('messageInput');
-  const sendBtn = document.getElementById('sendBtn');
-  const chatHeader = document.getElementById('chatHeader');
-
-  let activeUser = null;
-  let allUsers = [];
-  const messageStore = {};
-  let currentUserInfo = {};
-
-  // Function to load countries
-  async function loadCountries() {
-    try {
-      const res = await fetch("https://restcountries.com/v3.1/all");
-      const countries = await res.json();
-      countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-      countries.forEach(c => {
-        const option = document.createElement("option");
-        option.value = c.cca2.toLowerCase();
-        option.text = c.name.common;
-        countrySelect.appendChild(option);
-      });
-
-      // ✅ Enable login button once countries are loaded
-      document.getElementById('loginBtn').disabled = false;
-    } catch (error) {
-      alert("Failed to load countries. Please try again later.");
-    }
-  }
-
-  // Function to insert emoji in the message input
-  function insertEmoji() {
-    messageInput.value += '😊';
-    messageInput.focus();
-  }
-
-  // Function to send GIF
-  function sendGIF() {
-    if (!activeUser) return;
-    const gifURL = 'https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif';
-    appendMessage(`You sent a GIF: ${gifURL}`);
-    messageStore[activeUser].push(`You sent a GIF: ${gifURL}`);
-    renderMessages();
-  }
-
-  // Function to send image
-  function sendImage() {
-    if (!activeUser) return;
-    const imageURL = 'https://via.placeholder.com/150';
-    appendMessage(`You sent an image: ${imageURL}`);
-    messageStore[activeUser].push(`You sent an image: ${imageURL}`);
-    renderMessages();
-  }
-
-  // Function to filter users based on gender
-  function filterUsers(gender) {
-    const users = document.querySelectorAll('.user');
-    users.forEach(u => {
-      if (gender === 'all' || u.classList.contains(gender)) {
-        u.style.display = 'flex';
-      } else {
-        u.style.display = 'none';
-      }
-    });
-  }
-
-  // Function to append message in the chat
-  function appendMessage(msg) {
-    const div = document.createElement('div');
-    div.className = 'message';
-    div.textContent = msg;
-    chatBody.appendChild(div);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  // Function to start the chat
-  function startChat() {
-    const name = document.getElementById('username').value.trim();
-    const age = document.getElementById('age').value.trim();
-    const gender = document.getElementById('gender').value;
-    const countryCode = document.getElementById('country').value;
-    const region = document.getElementById('region').value.trim();
-
-    const countrySelectEl = document.getElementById('country');
-    const selectedOption = countrySelectEl.options[countrySelectEl.selectedIndex];
-    if (!selectedOption || !selectedOption.value) {
-      alert("Please select a country");
-      return;
-    }
-    const countryName = selectedOption.text;
-
-    if (!name || !age || !gender || !countryCode || !region) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    currentUserInfo = { name, age, gender, region, countryCode, countryName };
-
-    document.getElementById('loginSection').style.display = 'none';
-    const chatContainer = document.getElementById('chatContainer');
-    chatContainer.classList.add('show');
-
-    chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
-
-    if (!messageStore[currentUserInfo.name]) {
-      messageStore[currentUserInfo.name] = [];
-    }
-
-    allUsers.push(currentUserInfo);  // Add the current user to allUsers array
-
-    const all = [currentUserInfo, ...allUsers];
-    all.forEach(u => createUserElement(u));
-  }
-
-  // Function to create user element in the sidebar
-  function createUserElement(user) {
-    if (document.querySelector(`[data-username="${user.name}"]`)) return;
-
-    const userDiv = document.createElement('div');
-    userDiv.className = `user ${user.gender.toLowerCase()}`;
-    userDiv.dataset.username = user.name;
-    userDiv.innerHTML = `
-      <div class="user-info">
-        <strong>${user.name}</strong>
-        <small>${user.age} yrs, ${user.region}, ${user.countryName}</small>
+    <!-- Chat Area -->
+    <section class="flex-1 flex flex-col p-4">
+      <div id="chatHeader" class="font-semibold text-lg mb-2">Select a user to chat</div>
+      
+      <div id="chatBox" class="flex-1 bg-gray-700 rounded p-3 overflow-y-auto mb-4">
+        <!-- Chat messages will appear here -->
       </div>
-      <img src="https://flagcdn.com/w320/${user.countryCode.toLowerCase()}.png" class="flag" />
-    `;
 
-    userDiv.onclick = () => {
-      activeUser = user.name;
-      chatHeader.innerHTML = `Chat with ${user.name}`;
-      messageInput.disabled = false;
-      sendBtn.disabled = false;
+      <div class="flex space-x-2">
+        <input id="messageInput" type="text" placeholder="Type a message" class="flex-1 p-2 rounded bg-gray-800 text-white border border-gray-600" />
+        <button id="sendBtn" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Send</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const users = ['Alice', 'Bob', 'Charlie', 'David', 'Eva'];
+    const userList = document.getElementById('userList');
+    const chatBox = document.getElementById('chatBox');
+    const chatHeader = document.getElementById('chatHeader');
+    const sendBtn = document.getElementById('sendBtn');
+    const messageInput = document.getElementById('messageInput');
+
+    let currentUser = null;
+    const chats = {};
+
+    users.forEach(user => {
+      const li = document.createElement('li');
+      li.textContent = user;
+      li.className = 'cursor-pointer p-2 rounded hover:bg-gray-600';
+      li.onclick = () => {
+        currentUser = user;
+        chatHeader.textContent = `Chatting with ${user}`;
+        renderMessages();
+      };
+      userList.appendChild(li);
+    });
+
+    sendBtn.onclick = () => {
+      if (!currentUser || !messageInput.value.trim()) return;
+      const msg = { from: 'You', text: messageInput.value };
+      chats[currentUser] = chats[currentUser] || [];
+      chats[currentUser].push(msg);
+      messageInput.value = '';
       renderMessages();
     };
 
-    userList.appendChild(userDiv);
-  }
-
-  // Function to render messages for active chat
-  function renderMessages() {
-    if (!activeUser || !messageStore[activeUser]) return;
-
-    chatBody.innerHTML = '';
-    messageStore[activeUser].forEach(msg => {
-      const div = document.createElement('div');
-      div.className = 'message';
-      div.textContent = msg;
-      chatBody.appendChild(div);
-    });
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  // Function to send a message
-  function sendMessage() {
-    const msg = messageInput.value.trim();
-    if (!msg) return;
-    messageStore[activeUser].push(`You: ${msg}`);
-    appendMessage(`You: ${msg}`);
-    renderMessages();
-    messageInput.value = '';
-  }
-
-  loadCountries();  // Load countries when page loads
-</script>
-
+    function renderMessages() {
+      chatBox.innerHTML = '';
+      const messages = chats[currentUser] || [];
+      messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'mb-2';
+        div.innerHTML = `<strong>${msg.from}:</strong> ${msg.text}`;
+        chatBox.appendChild(div);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>
