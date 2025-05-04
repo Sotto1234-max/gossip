@@ -6,12 +6,20 @@
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": ["chat", "socket.io", "private messaging", "video chat"],
-  "author": "YourName",
+  "keywords": [
+    "chat",
+    "socket.io",
+    "private messaging",
+    "video chat"
+  ],
+  "author": "YourName", 
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "socket.io": "^4.7.5"
+  },
+  "engines": {
+    "node": ">=14.x.x"
   }
 }
