@@ -146,31 +146,33 @@
   const messageStore = {};
   let currentUserInfo = {};
 
+  // Function to load countries
   async function loadCountries() {
-  try {
-    const res = await fetch("https://restcountries.com/v3.1/all");
-    const countries = await res.json();
-    countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-    countries.forEach(c => {
-      const option = document.createElement("option");
-      option.value = c.cca2.toLowerCase();
-      option.text = c.name.common;
-      countrySelect.appendChild(option);
-    });
+    try {
+      const res = await fetch("https://restcountries.com/v3.1/all");
+      const countries = await res.json();
+      countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+      countries.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.cca2.toLowerCase();
+        option.text = c.name.common;
+        countrySelect.appendChild(option);
+      });
 
-    // ✅ Enable login button once countries are loaded
-    document.getElementById('loginBtn').disabled = false;
-  } catch (error) {
-    alert("Failed to load countries. Please try again later.");
+      // ✅ Enable login button once countries are loaded
+      document.getElementById('loginBtn').disabled = false;
+    } catch (error) {
+      alert("Failed to load countries. Please try again later.");
+    }
   }
-}
 
-
+  // Function to insert emoji in the message input
   function insertEmoji() {
     messageInput.value += '😊';
     messageInput.focus();
   }
 
+  // Function to send GIF
   function sendGIF() {
     if (!activeUser) return;
     const gifURL = 'https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif';
@@ -179,6 +181,7 @@
     renderMessages();
   }
 
+  // Function to send image
   function sendImage() {
     if (!activeUser) return;
     const imageURL = 'https://via.placeholder.com/150';
@@ -187,6 +190,7 @@
     renderMessages();
   }
 
+  // Function to filter users based on gender
   function filterUsers(gender) {
     const users = document.querySelectorAll('.user');
     users.forEach(u => {
@@ -198,6 +202,7 @@
     });
   }
 
+  // Function to append message in the chat
   function appendMessage(msg) {
     const div = document.createElement('div');
     div.className = 'message';
@@ -206,42 +211,46 @@
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
- function startChat() {
-  const name = document.getElementById('username').value.trim();
-  const age = document.getElementById('age').value.trim();
-  const gender = document.getElementById('gender').value;
-  const countryCode = document.getElementById('country').value;
-  const region = document.getElementById('region').value.trim();
+  // Function to start the chat
+  function startChat() {
+    const name = document.getElementById('username').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const gender = document.getElementById('gender').value;
+    const countryCode = document.getElementById('country').value;
+    const region = document.getElementById('region').value.trim();
 
-  const countrySelectEl = document.getElementById('country');
-  const selectedOption = countrySelectEl.options[countrySelectEl.selectedIndex];
-  if (!selectedOption || !selectedOption.value) {
-    alert("Please select a country");
-    return;
+    const countrySelectEl = document.getElementById('country');
+    const selectedOption = countrySelectEl.options[countrySelectEl.selectedIndex];
+    if (!selectedOption || !selectedOption.value) {
+      alert("Please select a country");
+      return;
+    }
+    const countryName = selectedOption.text;
+
+    if (!name || !age || !gender || !countryCode || !region) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    currentUserInfo = { name, age, gender, region, countryCode, countryName };
+
+    document.getElementById('loginSection').style.display = 'none';
+    const chatContainer = document.getElementById('chatContainer');
+    chatContainer.classList.add('show');
+
+    chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
+
+    if (!messageStore[currentUserInfo.name]) {
+      messageStore[currentUserInfo.name] = [];
+    }
+
+    allUsers.push(currentUserInfo);  // Add the current user to allUsers array
+
+    const all = [currentUserInfo, ...allUsers];
+    all.forEach(u => createUserElement(u));
   }
-  const countryName = selectedOption.text;
 
-  if (!name || !age || !gender || !countryCode || !region) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  currentUserInfo = { name, age, gender, region, countryCode, countryName };
-
-  document.getElementById('loginSection').style.display = 'none';
-  const chatContainer = document.getElementById('chatContainer');
-  chatContainer.classList.add('show');
-
-  chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
-
-  if (!messageStore[currentUserInfo.name]) {
-    messageStore[currentUserInfo.name] = [];
-  }
-
-  const all = [currentUserInfo, ...allUsers];
-  all.forEach(u => createUserElement(u));
-}
-
+  // Function to create user element in the sidebar
   function createUserElement(user) {
     if (document.querySelector(`[data-username="${user.name}"]`)) return;
 
@@ -253,44 +262,45 @@
         <strong>${user.name}</strong>
         <small>${user.age} yrs, ${user.region}, ${user.countryName}</small>
       </div>
-      <img src="https://flagcdn.com/${user.countryCode}.svg" class="flag" />
+      <img src="https://flagcdn.com/w320/${user.countryCode.toLowerCase()}.png" class="flag" />
     `;
-    userDiv.addEventListener('click', () => {
-      document.querySelectorAll('.user').forEach(u => u.classList.remove('active'));
-      userDiv.classList.add('active');
+
+    userDiv.onclick = () => {
       activeUser = user.name;
-      chatHeader.innerHTML = `${user.name}<br/><small>${user.gender}, ${user.age} yrs, ${user.region}, ${user.countryName}</small>`;
+      chatHeader.innerHTML = `Chat with ${user.name}`;
       messageInput.disabled = false;
       sendBtn.disabled = false;
       renderMessages();
-    });
+    };
+
     userList.appendChild(userDiv);
   }
 
+  // Function to render messages for active chat
   function renderMessages() {
     if (!activeUser || !messageStore[activeUser]) return;
 
     chatBody.innerHTML = '';
     messageStore[activeUser].forEach(msg => {
       const div = document.createElement('div');
-      div.className = `message ${msg.startsWith("You") ? 'you' : ''}`;
+      div.className = 'message';
       div.textContent = msg;
       chatBody.appendChild(div);
     });
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
+  // Function to send a message
   function sendMessage() {
-    if (!activeUser || !messageInput.value.trim()) return;
-
-    const msg = `You: ${messageInput.value.trim()}`;
-    appendMessage(msg);
-    messageStore[activeUser].push(msg);
+    const msg = messageInput.value.trim();
+    if (!msg) return;
+    messageStore[activeUser].push(`You: ${msg}`);
+    appendMessage(`You: ${msg}`);
     renderMessages();
     messageInput.value = '';
   }
 
-  loadCountries();
+  loadCountries();  // Load countries when page loads
 </script>
 
 </body>
