@@ -106,7 +106,7 @@
     <option value="">Select Country</option>
   </select>
   <input type="text" id="region" placeholder="Your Region" required />
-  <button onclick="startChat()">Login & Enter</button>
+  <button onclick="startChat()" id="loginBtn" disabled>Login & Enter</button>
 </div>
 
 <div class="container" id="chatContainer">
@@ -147,20 +147,24 @@
   let currentUserInfo = {};
 
   async function loadCountries() {
-    try {
-      const res = await fetch("https://restcountries.com/v3.1/all");
-      const countries = await res.json();
-      countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-      countries.forEach(c => {
-        const option = document.createElement("option");
-        option.value = c.cca2.toLowerCase();
-        option.text = c.name.common;
-        countrySelect.appendChild(option);
-      });
-    } catch (error) {
-      alert("Failed to load countries. Please try again later.");
-    }
+  try {
+    const res = await fetch("https://restcountries.com/v3.1/all");
+    const countries = await res.json();
+    countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    countries.forEach(c => {
+      const option = document.createElement("option");
+      option.value = c.cca2.toLowerCase();
+      option.text = c.name.common;
+      countrySelect.appendChild(option);
+    });
+
+    // ✅ Enable login button once countries are loaded
+    document.getElementById('loginBtn').disabled = false;
+  } catch (error) {
+    alert("Failed to load countries. Please try again later.");
   }
+}
+
 
   function insertEmoji() {
     messageInput.value += '😊';
