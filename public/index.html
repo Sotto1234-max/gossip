@@ -4,33 +4,18 @@
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <meta charset="UTF-8" />
   <title>Free Random Video chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <style>
-  * {
-    box-sizing: border-box;
-  }
+ * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-  body {
-    font-family: sans-serif;
-    background: #222;
-    color: white;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+   body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-  #header {
-    background: #111;
-    padding: 15px;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  }
+  #header{
+      background: linear-gradient(to right, #6a11cb, #fc466b);
+      color: white; padding: 10px; text-align: center; font-size: 24px; font-weight: 700;
+    }
 
   #header h2 {
     color: #FFD700;
@@ -38,13 +23,10 @@
     margin: 0;
   }
 
-  #main {
-    flex: 1;
-    display: none;
-    flex-direction: row;
-    overflow: hidden;
-    padding-top: 80px;
-  }
+  #main{
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
+    }
 
   #leftSidebar {
     width: 250px;
