@@ -1,211 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gossip Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Free Random Video chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <style>
-    /* Existing styles remain unchanged */
-  </style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: sans-serif;
+    background: #222;
+    color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  #header {
+    background: #111;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  #header h2 {
+    color: #FFD700;
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  #main {
+    flex: 1;
+    display: none;
+    flex-direction: row;
+    overflow: hidden;
+    padding-top: 80px;
+  }
+
+  #leftSidebar {
+    width: 250px;
+    height: 100vh;
+    background: #111;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+  }
+
+  #leftSidebar h3 {
+    margin: 0;
+    padding: 15px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    flex-shrink: 0;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  #userList {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #4facfe #333;
+  }
+
+  #userList::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #userList::-webkit-scrollbar-track {
+    background: #222;
+  }
+
+  #userList::-webkit-scrollbar-thumb {
+    background-color: #4facfe;
+    border-radius: 10px;
+  }
+
+  .user {
+    padding: 8px;
+    margin-bottom: 6px;
+    background: #222;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: background 0.3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .user:hover {
+    background: #333;
+  }
+
+  .user img {
+    max-width: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+
+  #rightSidebar {
+    flex: 1;
+    background-color: #111;
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 100vh;
+    border-left: 1px solid #333;
+  }
+
+  #rightSidebar h4 {
+    color: #00FF00;
+  }
+
+  #container {
+    flex: 3;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+/* Updated Video Collection Styles */
+  #videoCollection1 {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
+
+  #videoCollection1 h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
+  #videoCollection1 button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #videoCollection1 button:hover {
+    background-color: #FF4500;
+    transform: scale(1.03);
+  }
+  /* Updated Video Collection Styles */
+  #videoCollection {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
+
+  #videoCollection h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
+  #videoCollection button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #videoCollection button:hover {
+    background-color: #FF4500;
+    transform: scale(1.03);
+  }
+
+  #login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    background: linear-gradient(135deg, #1c1c1c, #333);
+    padding-top: 80px;
+  }
+
+  #loginBox {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #loginBox input {
+    width: 100%;
+    margin: 10px 0;
+    background: #222;
+    color: white;
+    border: 1px solid #333;
+  }
+
+  #loginBox button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: linear-gradient(135deg, #FFA500, #FF4500);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s;
+  }
+
+  #loginBox button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #FF6347, #FFA07A);
+  }
+
+  #preview {
+    max-width: 100px;
+    border: 2px solid #FFA500;
+    border-radius: 50%;
+    margin-top: 10px;
+    display: none;
+  }
+
+  #chat, #privateChat {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 600px;
+    display: none;
+  }
+
+  #messages {
+    height: 400px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  #privateMessages {
+    height: 300px;
+    overflow-y: auto;
+    background: #333;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  input, button {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  #sendRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #msg {
+    flex: 1;
+  }
+
+  img {
+    max-width: 80px;
+    border-radius: 50%;
+    margin-top: 10px;
+  }
+
+  button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #FF4500;
+  }
+
+  @media (max-width: 1024px) {
+    #main {
+      flex-direction: column;
+    }
+
+    #leftSidebar {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      border-right: none;
+      border-bottom: 1px solid #333;
+    }
+
+    #rightSidebar {
+      max-height: 250px;
+      padding: 15px;
+    }
+
+    #container {
+      padding: 10px;
+    }
+
+    #videoCollection {
+      max-width: 90%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #header h2 {
+      font-size: 1.5rem;
+    }
+
+    .user img {
+      max-width: 30px;
+    }
+
+    #loginBox {
+      padding: 20px;
+    }
+
+    #preview {
+      max-width: 80px;
+    }
+
+    #videoCollection button {
+      font-size: 0.95rem;
+    }
+  }
+    .sidebarScrollingNote {
+  width: 100%;
+  overflow: hidden;
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.sidebarScrollText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: sidebarScroll 12s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes sidebarScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.public-chat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 12px 20px;
+  border-bottom: 2px solid #ff6600;
+}
+
+.public-chat-header h2 {
+  color: #fff;
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.scrolling-text {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  height: 30px;
+  margin: 10px 0;
+}
+
+.scrolling-text span {
+  display: inline-block;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff0000, 0 0 10px #ff6600, 0 0 20px #ffcc00;
+  animation: scroll-left 10s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.cta-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff6600, #ffcc00);
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 0 10px #ff6600;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse 1.5s infinite;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff9900;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px #ff6600;
+  }
+  50% {
+    box-shadow: 0 0 20px #ffcc00;
+  }
+  100% {
+    box-shadow: 0 0 10px #ff6600;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .public-chat-header h2 {
+    font-size: 20px;
+  }
+
+  .scrolling-text span {
+    font-size: 16px;
+  }
+
+  .cta-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+</style>
+  <script src='//whephiwums.com/sdk.js' data-zone='9229076' data-sdk='show_9229076'></script>
+
 </head>
 <body>
-
-<header>Gossip</header>
-
-<div class="login-section" id="loginSection">
-  <h2>Enter Your Info</h2>
-  <input type="text" id="username" placeholder="Your Name" required />
-  <input type="number" id="age" placeholder="Your Age" required />
-  <select id="gender" required>
-    <option value="">Select Gender</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-  </select>
-  <select id="country" required>
-    <option value="">Select Country</option>
-  </select>
-  <input type="text" id="region" placeholder="Your Region" required />
-  <button onclick="startChat()">Login & Enter</button>
-</div>
-
-<div class="container" id="chatContainer">
-  <div class="sidebar">
-    <h3>Online Users 184</h3>
-    <div class="filter-buttons">
-      <button onclick="filterUsers('all')">🌐 All</button>
-      <button onclick="filterUsers('male')">👨‍🦱 Male</button>
-      <button onclick="filterUsers('female')">👩 Female</button>
-    </div>
-    <div class="user-list" id="userList"></div>
+  <div id="header">
+    <h2>Free Random Video chat 💬</h2>
   </div>
 
-  <div class="chat-section">
-    <div class="chat-header" id="chatHeader">Select a user<br/><small></small></div>
-    <div class="chat-body" id="chatBody"></div>
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type your message..." disabled />
-      <button class="emoji" onclick="insertEmoji()">😊</button>
-      <button class="gif" onclick="sendGIF()">GIF</button>
-      <button class="image" onclick="sendImage()">📷</button>
-      <button class="send" onclick="sendMessage()" id="sendBtn" disabled>Send</button>
+  <div id="login">
+    <div id="loginBox">
+      <h3 style="color: #FFA500;">Start Chatting!</h3>
+      <input type="text" id="username" placeholder="Enter your name" />
+      <input type="file" id="picInput" accept="image/*" />
+      <img id="preview" src="#" />
+      <button onclick="startChat()">Start Chat</button>
     </div>
   </div>
-</div>
 
+  <div id="main">
+    <div id="leftSidebar">
+  <h3 id="onlineUserCount">Online Users (300+)</h3>
+  
+    </div>
+
+    <div id="container">
+      <div id="chat">
+        <div class="public-chat-header">
+  <h2>Public Chat</h2>
+  <div class="scrolling-text">
+    <span>🔥Click below on 👀 Video Chat, login with any gmail to start video chat</span>
+  </div>
+          <a href="https://www.febspot.com/auth/google/?ref=725136" class="cta-button" target="_blank">
+    👀 Video Chat
+  </a>
+</div>
+        <div id="messages"></div>
+        <div id="sendRow">
+          <input id="msg" placeholder="Type your message..." />
+          <button onclick="sendThenShowAd()">Send</button>
+
+<script src="https://cdn.adsgram.io/ads.js"></script>
 <script>
-  const countrySelect = document.getElementById("country");
-  const userList = document.getElementById('userList');
-  const chatBody = document.getElementById('chatBody');
-  const messageInput = document.getElementById('messageInput');
-  const sendBtn = document.getElementById('sendBtn');
-  const chatHeader = document.getElementById('chatHeader');
+  let AdController;
 
-  let activeUser = null;
-  let allUsers = [];
-  const messageStore = {};
-  let currentUserInfo = {};
+  // পেজ লোড হলে অ্যাড ইনিশিয়ালাইজ করো
+  window.onload = async function () {
+    try {
+      AdController = window.Adsgram.init({
+        blockId: "int-10200" // এখানে তোমার আসল block ID বসাও
+      });
+    } catch (err) {
+      console.log("Ad init failed:", err);
+    }
+  };
 
-  async function loadCountries() {
-    const res = await fetch("https://restcountries.com/v3.1/all");
-    const countries = await res.json();
-    countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-    countries.forEach(c => {
-      const option = document.createElement("option");
-      option.value = c.cca2.toLowerCase();
-      option.text = c.name.common;
-      countrySelect.appendChild(option);
-    });
+  // এই ফাংশনটা বাটনে ক্লিক করলে কল হবে
+  async function sendThenShowAd() {
+    // আগে মেসেজ পাঠাও
+    send();
+
+    // তারপর অ্যাড দেখাও
+    try {
+      if (AdController) {
+        await AdController.show();
+      }
+    } catch (err) {
+      console.log("Ad failed to show:", err);
+    }
   }
 
-  function insertEmoji() {
-    messageInput.value += '😊';
-    messageInput.focus();
+  // তোর আসল send() ফাংশন
+  function send() {
+    console.log("Message sent!");
+    // এখানে তুই যেটা মেসেজ সেন্ড করিস বা সার্ভারে পাঠাস, সেটা বসাবি
   }
+</script>
 
-  function sendGIF() {
-    if (!activeUser) return;
-    const gifURL = 'https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif';
-    appendMessage(`You sent a GIF: ${gifURL}`);
-    messageStore[activeUser].push(`You sent a GIF: ${gifURL}`);
-    renderMessages();
-  }
 
-  function sendImage() {
-    if (!activeUser) return;
-    const imageURL = 'https://via.placeholder.com/150';
-    appendMessage(`You sent an image: ${imageURL}`);
-    messageStore[activeUser].push(`You sent an image: ${imageURL}`);
-    renderMessages();
-  }
+          <button onclick="
+    // Rewarded interstitial
+        
+show_9229076().then(() => {
+    window.open('https://t.me/TalkwithStrangerss')
+    alert('Stay tuned Video stream will be soon here');
+})" style="background: linear-gradient(135deg, #ff6a00, #ee0979); color: white; font-weight: bold; padding: 15px 25px; font-size: 1rem; border: none; border-radius: 12px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.3s ease;">
+  💬 Start Video Chat   
+</button>
+        </div>
+      </div>
+      <div id="privateChat">
+        <h3 id="privateTitle"></h3>
+        <div id="privateMessages"></div>
+        <input id="privateMsg" placeholder="Type private message..." />
+        <button onclick="
+    // Rewarded Popup
 
-  function filterUsers(gender) {
-    const users = document.querySelectorAll('.user');
-    users.forEach(u => {
-      if (gender === 'all' || u.classList.contains(gender)) {
-        u.style.display = 'flex';
+show_9229076('pop').then(() => {
+    sendPrivate()
+    // your code to reward user for rewarded format
+}).catch(e => {
+    // user get error during playing ad
+    // do nothing or whatever you want
+})
+
+        ">Send Private</button>
+      </div>
+    </div>
+    
+    <div id="rightSidebar">
+      <div id="telega-ad-container"></div>
+    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+<script>
+  const ads = window.TelegaIn.AdsController.create_miniapp({
+    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
+    ads.ad_show({
+    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+    container: "telega-ad-container"
+  });
+</script>
+      
+  
+      <div class="sidebarScrollingNote">
+  <div class="sidebarScrollText">🎬 Fresh videos added daily — Free to download! Don’t miss out!</div>
+</div>
+
+      <div id="videoCollection">
+        <h4>Real 18+ Video Collections</h4>
+        <button onclick=" show_9229076().then(() => { window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">New Collection</button>
+        <button onclick="show_9229076().then(() => { window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">Hot Webseries</button>
+        <button onclick="show_9229076().then(() => { window.open('https://t.me/Bhailinde', '_blank')
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})">Real Collection</button>
+      </div>
+<div id="videoCollection">
+  <h4>Telegram group</h4>
+        <button onclick="alert('Wait for approval'); window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');">
+  Join group
+</button>
+
+</div>
+      
+      <div id="telega-ad-container"></div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let username = '';
+    let profilePic = '';
+    let userColors = {};
+
+    function getRandomColor() {
+      const colors = ["#FF6347", "#1E90FF", "#32CD32", "#FFD700", "#FF69B4", "#00CED1", "#DA70D6"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    let privateTo = null;
+
+    function formatTime() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+
+    function startChat() {
+      const nameInput = document.getElementById('username');
+      const picInput = document.getElementById('picInput');
+
+      if (!nameInput.value) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      username = nameInput.value;
+      const file = picInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic = e.target.result;
+          completeLogin();
+        };
+        reader.readAsDataURL(file);
       } else {
-        u.style.display = 'none';
+        completeLogin();
+      }
+    }
+
+    function completeLogin() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('main').style.display = 'flex';
+      document.getElementById('chat').style.display = 'block';
+      socket.emit('join', { user: username, pic: profilePic });
+    }
+
+    function send() {
+      const input = document.getElementById('msg');
+      const message = {
+        user: username,
+        pic: profilePic,
+        text: input.value,
+        time: formatTime()
+      };
+      socket.emit('message', message);
+      input.value = '';
+    }
+
+    socket.on('message', data => {
+      const div = document.createElement('div');
+      if (!userColors[data.user]) {
+        userColors[data.user] = getRandomColor();
+      }
+      div.innerHTML = `<strong style="color: ${userColors[data.user]}">${data.user}</strong> <small>${data.time}</small><br>
+        ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
+        ${data.text}<hr>`;
+      const messagesContainer = document.getElementById('messages');
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    socket.on('privateMessage', data => {
+      if (!userColors[data.user]) {
+        userColors[data.user] = getRandomColor();
+      }
+      const div = document.createElement('div');
+      div.innerHTML = `<strong style="color: ${userColors[data.user]}">${data.user}</strong> <small>${data.time}</small>: ${data.text}<hr>`;
+      document.getElementById('privateMessages').appendChild(div);
+    });
+
+    const userList = document.getElementById('userList');
+    socket.on('onlineUsers', users => {
+      userList.innerHTML = '';
+      users.forEach(u => {
+        if (u.user !== username) {
+          const div = document.createElement('div');
+          div.classList.add('user');
+          div.innerHTML = `<img src="${u.pic}" /><span>${u.user}</span>`;
+          div.onclick = () => {
+            privateTo = u.id;
+            document.getElementById('privateChat').style.display = 'block';
+            document.getElementById('privateTitle').innerText = `Chatting with ${u.user}`;
+          };
+          userList.appendChild(div);
+        }
+      });
+    });
+
+    function sendPrivate() {
+      const input = document.getElementById('privateMsg');
+      if (!privateTo || !input.value.trim()) return;
+
+      const privateMsg = {
+        to: privateTo,
+        user: username,
+        text: input.value,
+        time: formatTime()
+      };
+
+      const div = document.createElement('div');
+      div.innerHTML = `<strong>You</strong> <small>${privateMsg.time}</small>: ${privateMsg.text}<hr>`;
+      document.getElementById('privateMessages').appendChild(div);
+
+      socket.emit('privateMessage', privateMsg);
+      input.value = '';
+    }
+
+    document.getElementById('picInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('preview').src = e.target.result;
+          document.getElementById('preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
       }
     });
-  }
-
-  function appendMessage(msg) {
-    const div = document.createElement('div');
-    div.className = 'message';
-    div.textContent = msg;
-    chatBody.appendChild(div);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function startChat() {
-    const name = document.getElementById('username').value.trim();
-    const age = document.getElementById('age').value.trim();
-    const gender = document.getElementById('gender').value;
-    const countryCode = document.getElementById('country').value;
-    const countryName = document.getElementById('country').selectedOptions[0].text;
-    const region = document.getElementById('region').value.trim();
-
-    if (!name || !age || !gender || !countryCode || !region) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    currentUserInfo = { name, age, gender, region, countryCode, countryName };
-
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('chatContainer').style.display = 'flex';
-
-    chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
-
-    const all = [currentUserInfo, ...allUsers];
-    all.forEach(u => createUserElement(u));
-
-    socket.emit('register-user', currentUserInfo);  // Send user info to server
-  }
-
-  function createUserElement(user) {
-    const userDiv = document.createElement('div');
-    userDiv.className = `user ${user.gender.toLowerCase()}`;
-    userDiv.dataset.username = user.name;
-    userDiv.innerHTML = `
-      <div class="user-info">
-        <strong>${user.name}</strong>
-        <small>${user.age} yrs, ${user.region}, ${user.countryName}</small>
-      </div>
-      <img src="https://flagcdn.com/${user.countryCode}.svg" class="flag" />
-    `;
-    userDiv.addEventListener('click', () => {
-      document.querySelectorAll('.user').forEach(u => u.classList.remove('active'));
-      userDiv.classList.add('active');
-      activeUser = user.name;
-      chatHeader.innerHTML = `${user.name}<br/><small>${user.gender}, ${user.age} yrs, ${user.region}, ${user.countryName}</small>`;
-      messageInput.disabled = false;
-      sendBtn.disabled = false;
-      renderMessages();
-    });
-    userList.appendChild(userDiv);
-  }
-
-  function renderMessages() {
-    chatBody.innerHTML = '';
-    const messages = messageStore[activeUser] || [];
-    messages.forEach(msg => appendMessage(msg));
-  }
-
-  function sendMessage() {
-    const text = messageInput.value.trim();
-    if (!text || !activeUser) return;
-    if (!messageStore[activeUser]) messageStore[activeUser] = [];
-    messageStore[activeUser].push(`You: ${text}`);
-    renderMessages();
-    messageInput.value = '';
-
-    const targetUser = allUsers.find(u => u.name === activeUser);
-    if (targetUser) {
-      socket.emit('private-message', {
-        to: targetUser.id,  // This assumes you have a user ID
-        message: text
-      });
-    }
-  }
-
-  loadCountries();
-
-  // Sample dummy users
-  allUsers = [
-    { name: "Alice", age: 22, gender: "Female", region: "NY", countryCode: "us", countryName: "United States" },
-    { name: "Bob", age: 28, gender: "Male", region: "London", countryCode: "gb", countryName: "United Kingdom" }
-  ];
-
-</script>
-
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io();
+  </script>
   
-  // Server-side logic and socket event handlers...
+  <script>
+  function updateOnlineCount() {
+    const min = 300;
+    const max = 900;
+    const randomCount = Math.floor(Math.random() * (max - min + 1)) + min;
+    document.getElementById("onlineUserCount").innerText = `Online Users on video chat👫 (${randomCount} )`;
+    
+    // Repeat every 15-20 seconds
+    const nextUpdate = Math.random() * (20000 - 15000) + 15000; // ms
+    setTimeout(updateOnlineCount, nextUpdate);
+  }
+
+  // Start the loop
+  updateOnlineCount();
 </script>
+  <script>
+  const button = document.querySelector('button');
+  button.onmouseover = () => {
+    button.style.transform = "scale(1.05)";
+    button.style.boxShadow = "0 0 20px rgba(255, 105, 180, 0.8)";
+  };
+  button.onmouseout = () => {
+    button.style.transform = "scale(1)";
+    button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
+  };
 
 </body>
-</html>
+</html> 
