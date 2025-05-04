@@ -202,34 +202,41 @@
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
-  function startChat() {
-    const name = document.getElementById('username').value.trim();
-    const age = document.getElementById('age').value.trim();
-    const gender = document.getElementById('gender').value;
-    const countryCode = document.getElementById('country').value;
-    const countryName = document.getElementById('country').selectedOptions[0].text;
-    const region = document.getElementById('region').value.trim();
+ function startChat() {
+  const name = document.getElementById('username').value.trim();
+  const age = document.getElementById('age').value.trim();
+  const gender = document.getElementById('gender').value;
+  const countryCode = document.getElementById('country').value;
+  const region = document.getElementById('region').value.trim();
 
-    if (!name || !age || !gender || !countryCode || !region) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    currentUserInfo = { name, age, gender, region, countryCode, countryName };
-
-    document.getElementById('loginSection').style.display = 'none';
-    const chatContainer = document.getElementById('chatContainer');
-    chatContainer.classList.add('show');
-
-    chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
-
-    if (!messageStore[currentUserInfo.name]) {
-      messageStore[currentUserInfo.name] = [];
-    }
-
-    const all = [currentUserInfo, ...allUsers];
-    all.forEach(u => createUserElement(u));
+  const countrySelectEl = document.getElementById('country');
+  const selectedOption = countrySelectEl.options[countrySelectEl.selectedIndex];
+  if (!selectedOption || !selectedOption.value) {
+    alert("Please select a country");
+    return;
   }
+  const countryName = selectedOption.text;
+
+  if (!name || !age || !gender || !countryCode || !region) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  currentUserInfo = { name, age, gender, region, countryCode, countryName };
+
+  document.getElementById('loginSection').style.display = 'none';
+  const chatContainer = document.getElementById('chatContainer');
+  chatContainer.classList.add('show');
+
+  chatHeader.innerHTML = `Welcome, ${name}<br/><small>${age} yrs, ${region}, ${countryName}</small>`;
+
+  if (!messageStore[currentUserInfo.name]) {
+    messageStore[currentUserInfo.name] = [];
+  }
+
+  const all = [currentUserInfo, ...allUsers];
+  all.forEach(u => createUserElement(u));
+}
 
   function createUserElement(user) {
     if (document.querySelector(`[data-username="${user.name}"]`)) return;
