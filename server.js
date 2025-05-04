@@ -16,6 +16,11 @@ io.on('connection', socket => {
 
   // User Registration
   socket.on('register-user', (userInfo) => {
+    if (!userInfo.name || !userInfo.age || !userInfo.gender || !userInfo.countryCode) {
+      socket.emit('error', { message: 'Invalid user information.' });
+      return;
+    }
+
     users[socket.id] = { id: socket.id, ...userInfo };
     console.log('Registered:', users[socket.id]);
     sendUserList();
@@ -30,6 +35,8 @@ io.on('connection', socket => {
         fromName: fromUser.name,
         message
       });
+    } else {
+      socket.emit('error', { message: 'User not found.' });
     }
   });
 
