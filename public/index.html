@@ -98,7 +98,7 @@
     <option value="">Select Country</option>
   </select>
   <input type="text" id="region" placeholder="Your Region" required />
-  <button onclick="startChat()" id="loginButton" disabled>Login & Enter</button>
+  <button onclick="startChat()">Login & Enter</button>
 </div>
 
 <div class="container" id="chatContainer">
@@ -132,14 +132,12 @@
   const messageInput = document.getElementById('messageInput');
   const sendBtn = document.getElementById('sendBtn');
   const chatHeader = document.getElementById('chatHeader');
-  const loginButton = document.getElementById('loginButton');
 
   let activeUser = null;
   let allUsers = [];
   const messageStore = {};
   let currentUserInfo = {};
 
-  // Load countries for the dropdown
   async function loadCountries() {
     const res = await fetch("https://restcountries.com/v3.1/all");
     const countries = await res.json();
@@ -150,9 +148,6 @@
       option.text = c.name.common;
       countrySelect.appendChild(option);
     });
-
-    // Enable login button after countries are loaded
-    loginButton.disabled = false;
   }
 
   function insertEmoji() {
@@ -196,8 +191,6 @@
   }
 
   function startChat() {
-    console.log("startChat function triggered");
-
     const name = document.getElementById('username').value.trim();
     const age = document.getElementById('age').value.trim();
     const gender = document.getElementById('gender').value;
@@ -237,4 +230,36 @@
       userDiv.classList.add('active');
       activeUser = user.name;
       chatHeader.innerHTML = `${user.name}<br/><small>${user.gender}, ${user.age} yrs, ${user.region}, ${user.countryName}</small>`;
-      messageInput.disabled
+      messageInput.disabled = false;
+      sendBtn.disabled = false;
+      renderMessages();
+    });
+    userList.appendChild(userDiv);
+  }
+
+  function renderMessages() {
+    chatBody.innerHTML = '';
+    const messages = messageStore[activeUser] || [];
+    messages.forEach(msg => appendMessage(msg));
+  }
+
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (!text || !activeUser) return;
+    if (!messageStore[activeUser]) messageStore[activeUser] = [];
+    messageStore[activeUser].push(`You: ${text}`);
+    messageInput.value = '';
+    renderMessages();
+  }
+
+  loadCountries();
+
+  // Sample dummy users
+  allUsers = [
+    { name: "Alice", age: 22, gender: "Female", region: "NY", countryCode: "us", countryName: "United States" },
+    { name: "Bob", age: 28, gender: "Male", region: "London", countryCode: "gb", countryName: "United Kingdom" }
+  ];
+</script>
+
+</body>
+</html>
